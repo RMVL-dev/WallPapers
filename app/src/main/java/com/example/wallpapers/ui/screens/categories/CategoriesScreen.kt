@@ -2,31 +2,46 @@ package com.example.wallpapers.ui.screens.categories
 
 import android.content.Context
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.wallpapers.R
 import com.example.wallpapers.model.data.categories.Category
 import com.example.wallpapers.model.data.categories.categories
 import com.example.wallpapers.ui.screens.images.ImagesViewModel
+import com.example.wallpapers.utils.gradient
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoriesScreen(
     modifier: Modifier = Modifier,
@@ -34,14 +49,63 @@ fun CategoriesScreen(
     navigateToImagesScreen: () -> Unit,
     context: Context
 ){
+    var queryInput by remember {
+        mutableStateOf("")
+    }
     Column(modifier = modifier.fillMaxSize()) {
+        Column (
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        ){
+            OutlinedTextField(
+                label = { Text(text = stringResource(id = R.string.query))},
+                value =queryInput,
+                onValueChange = {queryInput = it},
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Done
+                )
+            )
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 32.dp, end = 32.dp),
+                onClick = {
+                    viewModel.changeCategory(queryInput)
+                    navigateToImagesScreen()
+                          },
+                contentPadding = PaddingValues(),
+                colors = ButtonDefaults.buttonColors(contentColor = Color.Transparent),
+                shape = RoundedCornerShape(30.dp)
+            ) {
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            brush = gradient,
+                            shape = RoundedCornerShape(30.dp)
+                        )
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.search).uppercase(),
+                        fontSize = 20.sp,
+                        color = Color.White
+                    )
+                }
+            }
+        }
         LazyColumn(modifier = modifier.fillMaxWidth()){
             items(categories){category: Category ->
                 CategoryCard(
                     category = category,
                     onClick = {
-                        viewModel.getListPhotos(
-                            page = 1,
+                        viewModel.changeCategory(
                             category = context.getString(category.category)
                         )
                         navigateToImagesScreen()

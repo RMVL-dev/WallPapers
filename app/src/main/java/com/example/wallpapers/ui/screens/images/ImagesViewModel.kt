@@ -19,21 +19,24 @@ class ImagesViewModel(
 
     var currentImage: String? = null
         private set
+
+    var currentCategory: String = "80s"
+        private set
+
+    var currentPage:Int = 1
+        private set
     init {
-        getListPhotos(
-            page = 1,
-            category = "80s"
-        )
+        getListPhotos()
     }
 
-    fun getListPhotos(page:Int, category:String){
+    fun getListPhotos(){
 
         viewModelScope.launch {
             wallpaperState = try {
                 ImagesUIState.Success(
                     photos = repository.getWallpapers(
-                        page = page,
-                        category = category.replace(" ","-")
+                        page = currentPage,
+                        category = currentCategory.replace(" ","-")
                     )
                 )
             }catch (e:HttpException){
@@ -47,5 +50,25 @@ class ImagesViewModel(
 
     fun setCurrentImage(imageUrl:String){
         currentImage = imageUrl
+    }
+
+    fun toNextPage(){
+        currentPage++
+        getListPhotos()
+    }
+
+    fun toPreviousPage(){
+        if (currentPage<1){
+            currentPage = 1
+        }else{
+            currentPage--
+        }
+        getListPhotos()
+    }
+
+    fun changeCategory(category: String){
+        currentPage = 1
+        currentCategory = category
+        getListPhotos()
     }
 }
