@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Links (
+data class Link (
     @SerialName("download")
     val image: String
 )

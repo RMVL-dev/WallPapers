@@ -1,4 +1,17 @@
 <resources>
     <string name="app_name">WallPapers</string>
     <string name="category_lo_fi">LoFi</string>
+    <string name="category_jdm">jdm</string>
+    <string name="category_dragons">dragons</string>
+    <string name="category_minimalism">minimalism</string>
+    <string name="category_night_city">night city</string>
+    <string name="category_mountains">mountains</string>
+    <string name="category_marvel_characters">marvel characters</string>
+    <string name="category_dc_characters">dc characters</string>
+    <string name="category_spider_web">spider web</string>
+    <string name="category_cannabis">cannabis</string>
+    <string name="category_cats">cats</string>
+    <string name="category_dogs">dogs</string>
+    <string name="set_wallpaper">Set wallpaper</string>
+    <string name="download">Download</string>
 </resources>

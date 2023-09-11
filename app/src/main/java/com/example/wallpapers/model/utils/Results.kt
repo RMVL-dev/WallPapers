@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Results(
     @SerialName("links")
-    val links: Links
+    val link: Link
 )

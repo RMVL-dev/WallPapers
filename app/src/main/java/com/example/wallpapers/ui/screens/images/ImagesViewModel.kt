@@ -17,13 +17,24 @@ class ImagesViewModel(
     var wallpaperState:ImagesUIState by mutableStateOf(ImagesUIState.Loading)
         private set
 
+    var currentImage: String? = null
+        private set
+    init {
+        getListPhotos(
+            page = 1,
+            category = "80s"
+        )
+    }
 
-    fun getListPhotos(){
+    fun getListPhotos(page:Int, category:String){
 
         viewModelScope.launch {
             wallpaperState = try {
                 ImagesUIState.Success(
-                    photos = repository.getWallpapers()
+                    photos = repository.getWallpapers(
+                        page = page,
+                        category = category.replace(" ","-")
+                    )
                 )
             }catch (e:HttpException){
                 ImagesUIState.Error
@@ -32,5 +43,9 @@ class ImagesViewModel(
             }
         }
 
+    }
+
+    fun setCurrentImage(imageUrl:String){
+        currentImage = imageUrl
     }
 }
