@@ -3,12 +3,16 @@ package com.example.wallpapers.navigation
 import android.content.Context
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -21,7 +25,7 @@ import com.example.wallpapers.ui.screens.images.GridImagesScreen
 import com.example.wallpapers.ui.screens.images.ImagesViewModel
 import com.example.wallpapers.viewmodel.provider.WallpaperViewModelProvider
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalTextApi::class)
 @Composable
 fun WallpaperApp(
     modifier: Modifier = Modifier,
@@ -29,13 +33,17 @@ fun WallpaperApp(
     imagesViewModel: ImagesViewModel = viewModel(
         factory = WallpaperViewModelProvider().factory
     ),
-    context: Context
+    context: Context = LocalContext.current
 ){
     Scaffold (
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = stringResource(id = R.string.app_name))
+                    Text(
+                        text = stringResource(id = R.string.app_name),
+                        style = MaterialTheme.typography.headlineLarge,
+                        fontSize = 30.sp
+                    )
                 },
             )
         }
@@ -48,7 +56,6 @@ fun WallpaperApp(
             composable(route = NavGraph.Categories.name){
                 CategoriesScreen(
                     viewModel = imagesViewModel,
-                    context = context,
                     navigateToImagesScreen = {
                         navController.navigate(route = NavGraph.ListPhotos.name)
                     }
@@ -62,7 +69,12 @@ fun WallpaperApp(
             }
             composable(route = NavGraph.OneImage.name){
                 imagesViewModel.currentImage?.let {
-                        imageUrl -> OneImageScreen(imageUrl = imageUrl)
+                        imageUrl -> OneImageScreen(
+                    imageUrl = imageUrl,
+                    setWallpaper = {
+                        imagesViewModel.setWallPaper(context = context)
+                    },
+                    )
                 }
             }
         }

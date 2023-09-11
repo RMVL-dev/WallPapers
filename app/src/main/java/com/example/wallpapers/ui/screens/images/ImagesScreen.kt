@@ -1,8 +1,6 @@
 package com.example.wallpapers.ui.screens.images
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,19 +14,20 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.wallpapers.R
 import com.example.wallpapers.model.Photos
 import com.example.wallpapers.ui.screens.splash.WallpaperSplash
+
 @Composable
 fun GridImagesScreen(
     modifier: Modifier = Modifier,
@@ -37,9 +36,7 @@ fun GridImagesScreen(
 ){
     when(imagesViewModel.wallpaperState){
         ImagesUIState.Error -> {
-            Box (modifier = modifier
-                .fillMaxSize()
-                .background(Color.Red))
+
         }
         ImagesUIState.Loading -> {
             WallpaperSplash()
@@ -57,6 +54,7 @@ fun GridImagesScreen(
     }
 }
 
+@OptIn(ExperimentalTextApi::class)
 @Composable
 fun GridImages(
     modifier: Modifier = Modifier,
@@ -69,7 +67,6 @@ fun GridImages(
     Column(
         modifier = modifier
             .fillMaxSize(),
-        //.verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
     LazyVerticalGrid(
@@ -102,7 +99,7 @@ fun GridImages(
             }
             Text(
                 text = viewModel.currentPage.toString(),
-                fontSize = 15.sp
+                style = MaterialTheme.typography.headlineMedium
             )
             IconButton(onClick = { nextPage() }) {
                 Icon(

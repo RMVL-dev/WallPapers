@@ -18,8 +18,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,11 +31,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.wallpapers.R
 import com.example.wallpapers.model.data.categories.Category
 import com.example.wallpapers.model.data.categories.categories
@@ -47,7 +49,7 @@ fun CategoriesScreen(
     modifier: Modifier = Modifier,
     viewModel: ImagesViewModel,
     navigateToImagesScreen: () -> Unit,
-    context: Context
+    context: Context = LocalContext.current
 ){
     var queryInput by remember {
         mutableStateOf("")
@@ -67,6 +69,14 @@ fun CategoriesScreen(
                     .padding(8.dp),
                 keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = ImeAction.Done
+                ),
+                textStyle = MaterialTheme.typography.headlineSmall,
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    textColor = Color.White,
+                    focusedLabelColor = Color.White,
+                    focusedBorderColor = Color.White,
+                    unfocusedBorderColor = Color.White,
+                    unfocusedLabelColor = Color.White
                 )
             )
             Button(
@@ -94,8 +104,8 @@ fun CategoriesScreen(
                 ) {
                     Text(
                         text = stringResource(id = R.string.search).uppercase(),
-                        fontSize = 20.sp,
-                        color = Color.White
+                        color = Color.White,
+                        style = MaterialTheme.typography.headlineSmall
                     )
                 }
             }
@@ -144,8 +154,7 @@ fun CategoryCard(
             )
             Text(
                 text = stringResource(id = category.category).uppercase(),
-                fontSize = 25.sp,
-                color = Color.White
+                style = MaterialTheme.typography.headlineMedium
             )
         }
     }

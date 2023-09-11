@@ -1,5 +1,6 @@
 package com.example.wallpapers.ui.screens.image
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,16 +24,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.wallpapers.R
 import com.example.wallpapers.utils.gradient
 
+@SuppressLint("ResourceType")
 @Composable
 fun OneImageScreen(
     modifier: Modifier = Modifier,
-    imageUrl:String
+    imageUrl:String,
+    setWallpaper: () -> Unit,
 ){
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -58,8 +62,7 @@ fun OneImageScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 32.dp, end = 32.dp),
-                onClick = {
-                },
+                onClick = setWallpaper,
                 contentPadding = PaddingValues(),
                 colors = ButtonDefaults.buttonColors(contentColor = Color.Transparent),
                 shape = RoundedCornerShape(30.dp)
@@ -77,8 +80,7 @@ fun OneImageScreen(
                 ) {
                     Text(
                         text = stringResource(id = R.string.set_wallpaper).uppercase(),
-                        fontSize = 20.sp,
-                        color = Color.White
+                        style = MaterialTheme.typography.headlineSmall,
                     )
                 }
             }
@@ -87,6 +89,7 @@ fun OneImageScreen(
                     .fillMaxWidth()
                     .padding(start = 32.dp, end = 32.dp),
                 onClick = {
+
                 },
                 contentPadding = PaddingValues(),
                 colors = ButtonDefaults.buttonColors(contentColor = Color.Transparent),
@@ -105,8 +108,7 @@ fun OneImageScreen(
                 ) {
                     Text(
                         text = stringResource(id = R.string.download).uppercase(),
-                        fontSize = 20.sp,
-                        color = Color.White
+                        style = MaterialTheme.typography.headlineSmall,
                     )
                 }
             }
