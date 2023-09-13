@@ -2,6 +2,10 @@ package com.example.wallpapers.ui.screens.images
 
 import android.app.WallpaperManager
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.os.Environment
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,7 +19,11 @@ import coil.request.SuccessResult
 import com.example.wallpapers.di.interfaces.WallpaperRepository
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
 import java.io.IOException
+import java.text.SimpleDateFormat
 
 class ImagesViewModel(
     private val repository: WallpaperRepository
@@ -92,6 +100,37 @@ class ImagesViewModel(
             }
             catch (e:Exception){
                 Toast.makeText(context,":(", Toast.LENGTH_LONG).show()
+            }
+        }
+
+    }
+
+
+    fun downloadImage(context: Context){
+        val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"Wallpapers")
+        val fileName = "${file.absolutePath}/${"IMG_${SimpleDateFormat("yyyymmsshhmmss")}.jpg"}"
+        val imageFile = File(fileName)
+
+        val loader = ImageLoader(context = context)
+        val request = ImageRequest.Builder(context = context)
+            .data(currentImage)
+            .build()
+
+        if (!file.exists() && !file.mkdirs()) {
+            file.mkdir()
+
+        }
+
+        viewModelScope.launch{
+            try {
+                val outputStream = FileOutputStream(imageFile)
+                val image =
+                    ((loader.execute(request = request) as SuccessResult).drawable as BitmapDrawable).bitmap
+                image.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            }catch (e:IOException){
+                Log.d("DOWNLOAD_", "$e")
+            }catch (e:FileNotFoundException){
+                Log.d("DOWNLOAD_", "$e")
             }
         }
 

@@ -74,6 +74,9 @@ fun WallpaperApp(
                     setWallpaper = {
                         imagesViewModel.setWallPaper(context = context)
                     },
+                    download = {
+                        imagesViewModel.downloadImage(context = context)
+                    }
                     )
                 }
             }

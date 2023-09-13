@@ -34,6 +34,7 @@ fun OneImageScreen(
     modifier: Modifier = Modifier,
     imageUrl:String,
     setWallpaper: () -> Unit,
+    download:()->Unit
 ){
 
     Column(
@@ -89,7 +90,7 @@ fun OneImageScreen(
                     .fillMaxWidth()
                     .padding(start = 32.dp, end = 32.dp),
                 onClick = {
-
+                          download()
                 },
                 contentPadding = PaddingValues(),
                 colors = ButtonDefaults.buttonColors(contentColor = Color.Transparent),
